@@ -1,0 +1,105 @@
+/* ==========================================================================
+   1. VISTA MÓVIL (Enfoque Mobile-First)
+   Se aplica a todas las pantallas por defecto. No lleva Media Query.
+   ========================================================================== */
+
+/* Requisito: Cuadrícula de una columna con espacio de 10px */
+.contenedor-de-figuras { /* Cambia esto por la clase real de tu HTML que agrupa las figuras */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+/* Configuración base para las figuras (ejemplo para el esquema de colores por defecto) */
+figure {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+    /* Puedes agregar transiciones aquí si quieres, se desactivarán en movimiento reducido */
+    transition: all 0.3s ease; 
+}
+
+
+/* ==========================================================================
+   2. VISTA TABLETA
+   Se activa a partir de 772px. ¡No usa max-width!
+   ========================================================================== */
+@media (min-width: 772px) {
+    .contenedor-de-figuras {
+        /* Requisito: Rejilla de dos columnas */
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    figure {
+        /* Requisito: Radio del borde circular (50% lo hace círculo si es un cuadrado) */
+        border-radius: 50%;
+    }
+
+    /* Requisito: Configurar la última figura para que ocupe ambas columnas */
+    figure:last-child {
+        grid-column: span 2;
+    }
+}
+
+
+/* ==========================================================================
+   3. VISTA PANTALLA GRANDE
+   Se activa a partir de 992px. ¡No usa max-width!
+   ========================================================================== */
+@media (min-width: 992px) {
+    .contenedor-de-figuras {
+        /* Opcional: Puedes cambiar a 3 columnas o mantenerlo según tu diseño */
+        grid-template-columns: repeat(3, 1fr); 
+    }
+
+    figure {
+        /* Requisito: Eliminar el radio del borde de todas las figuras */
+        border-radius: 0;
+    }
+
+    /* Requisito: Ajuste cada tercera figura para que ocupe ambas columnas */
+    figure:nth-child(3n) {
+        grid-column: span 2;
+    }
+
+    /* Nota: Como la última figura heredó el "span 2" de la tableta, 
+       puedes resetearla aquí si no coincide con la tercera regla, por ejemplo:
+       figure:last-child { grid-column: auto; } (dependiendo de cuántas figuras tengas) */
+}
+
+
+/* ==========================================================================
+   4. PREFERENCIAS DEL USUARIO: MOVIMIENTO REDUCIDO
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        /* Requisito: Eliminar el comportamiento de desplazamiento (smooth scroll) */
+        scroll-behavior: auto !important;
+    }
+
+    /* Es buena práctica eliminar animaciones y transiciones también */
+    *, ::before, ::after {
+        animation-delay: -1ms !important;
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+
+/* ==========================================================================
+   5. PREFERENCIAS DEL USUARIO: ESQUEMA DE COLORES OSCURO
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    figure {
+        /* Requisito: Cambiar el color de fondo a un color oscuro */
+        background-color: #1e1e1e;
+
+        /* Requisito: Cambiar el color de la fuente a uno más claro (amarillento) */
+        color: #fffde6;
+
+        /* Requisito: Cambiar el color del borde a negro */
+        border-color: #000000;
+    }
+}
